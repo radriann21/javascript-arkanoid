@@ -32,6 +32,18 @@ export class Ball {
     ctx.fill()
     ctx.closePath()
   }
+  
+  ballCollisions(canvasW, canvasH, paddle) {
+    if (this.x + this.speedX > canvasW || this.x + this.speedX < 0) {
+      this.speedX = -this.speedX
+    } 
+    if (this.y + this.speedY < 0 || this.y + this.radius > canvasH) {
+      this.speedY = -this.speedY
+    }
+    if (this.radius < paddle.width && this.y + this.radius > paddle.y && this.x + this.radius > paddle.x && this.x + this.radius < paddle.x + paddle.width) {
+      this.speedY = -this.speedY
+    }
+  }
 
   moveBall() {
     this.x += this.speedX
@@ -56,6 +68,12 @@ export class Paddle {
     ctx.fillRect(this.x, this.y, this.width, this.height)
     ctx.fillStyle = this.color
     ctx.closePath()
+  }
+
+  paddleCollisions(canvasW) {
+    if (this.x < 0 || this.x + this.width > canvasW) {
+      this.x = canvasW - this.width
+    }
   }
 
   movePaddle() {

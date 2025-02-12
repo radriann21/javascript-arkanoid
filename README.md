@@ -2,13 +2,13 @@
 
 ## Todo
 
-- [ ] Dibujar los elementos del juego
+- [  ] Dibujar los elementos del juego
   - Pelota
   - Ladrillos
   - Paredes
   - Pala
 
-- [ ] Implementar el movimiento de los elementos
+- [ done ] Implementar el movimiento de los elementos
   - Pelota
   - Pala
 
