@@ -17,6 +17,8 @@
   - Pelota contra paredes
   - Pelota contra pala
   - Pelota contra ladrillos
+  - Pala contra paredes
+
 
 - [ ] Implementar la destrucción de los ladrillos
 - [ ] Implementar la puntuación

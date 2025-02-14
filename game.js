@@ -18,11 +18,11 @@ export class Canvas {
 export class Ball {
   constructor(x, y, radius, color, speedX, speedY) {
     this.x = x,
-    this.y = y,
-    this.radius = radius,
-    this.color = color,
-    this.speedX = speedX,
-    this.speedY = speedY
+      this.y = y,
+      this.radius = radius,
+      this.color = color,
+      this.speedX = speedX,
+      this.speedY = speedY
   }
 
   drawBall(ctx) {
@@ -32,11 +32,11 @@ export class Ball {
     ctx.fill()
     ctx.closePath()
   }
-  
+
   ballCollisions(canvasW, canvasH, paddle) {
     if (this.x + this.speedX > canvasW || this.x + this.speedX < 0) {
       this.speedX = -this.speedX
-    } 
+    }
     if (this.y + this.speedY < 0 || this.y + this.radius > canvasH) {
       this.speedY = -this.speedY
     }
@@ -71,23 +71,51 @@ export class Paddle {
   }
 
   paddleCollisions(canvasW) {
-    if (this.x < 0 || this.x + this.width > canvasW) {
+    if (this.x < 0) {
+      this.x = 0
+    } else if (this.x + this.width > canvasW) {
       this.x = canvasW - this.width
     }
   }
 
   movePaddle() {
     document.addEventListener('keydown', (evt) => {
-      switch(evt.key) {
-        case 'ArrowLeft': 
+      switch (evt.key) {
+        case 'ArrowLeft':
           this.x -= this.speed
           break
-        case 'ArrowRight': 
+        case 'ArrowRight':
           this.x += this.speed
           break
         default:
           break
       }
     })
+  }
+}
+
+export class Brick {
+  constructor(x, y, width, height, color) {
+    this.x = x,
+    this.y = y,
+    this.width = width,
+    this.height = height,
+    this.color = color
+  }
+
+  drawBrick(ctx) {
+    ctx.beginPath()
+    ctx.fillStyle = this.color
+    ctx.fillRect(this.x, this.y, this.width, this.height)
+    ctx.closePath()
+  }
+
+  isColliding(ball) {
+    return (
+      ball.x + ball.radius > this.x &&
+      ball.x - ball.radius < this.x + this.width &&
+      ball.y + ball.radius > this.y &&
+      ball.y - ball.radius < this.y + this.height
+    );
   }
 }
