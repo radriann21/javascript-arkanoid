@@ -1,17 +1,23 @@
 import { Paddle, Canvas, Ball, Brick } from './game.js'
 
 const canvas = document.getElementById('canvas')
-canvas.width = 580
+const btnStart = document.getElementById('start-btn')
+const initMessage = document.getElementById('init')
+const scoreMessage = document.getElementById('score')
+
 canvas.height = 550
+canvas.width = 580
 
 const canvasObj = new Canvas(canvas, canvas.width, canvas.height)
 const ctx = canvasObj.getContext()
-
 const ball = new Ball(canvas.width / 2, canvas.height - 80, 6, '#000', 3, -3)
 const paddle = new Paddle((canvas.width / 2) - 50, canvas.height - 60, 100, 20, '#000')
 
 const colors = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33F3', '#33FFF6', '#FF9B33', '#A533FF']
 const bricks = []
+
+let gameRunning = false
+let score = 0
 
 function createBricks() {
   const c = 9; 
@@ -46,12 +52,41 @@ function drawBricks() {
       if (brick.isColliding(ball)) {
         ball.speedY = -ball.speedY
         brick.isDestroyed = true
+        score += 20
+        scoreMessage.textContent = score
       }
     }
   })
 }
 
+function checkGameOver(draw) {
+  if (ball.y + ball.radius > canvas.height) {
+    gameRunning = false
+    initMessage.style.display = 'flex'
+    scoreMessage.textContent = 0
+    cancelAnimationFrame(draw)
+  }
+}
+
+function resetGame() {
+  ball.x = canvas.width / 2;
+  ball.y = canvas.height - 80;
+  ball.speedX = 3;
+  ball.speedY = -3;
+
+  paddle.x = (canvas.width / 2) - 50;
+
+  bricks.length = 0; 
+  createBricks();
+
+  score = 0;
+  scoreMessage.textContent = score;
+
+  gameRunning = true;
+}
+
 function draw() {
+  if (!gameRunning) return
   canvasObj.clearCanvas(ctx)
   ball.drawBall(ctx)
   ball.moveBall()
@@ -59,8 +94,14 @@ function draw() {
   paddle.paddleCollisions(canvas.width)
   paddle.drawPaddle(ctx)
   drawBricks()
+  checkGameOver(draw)
   requestAnimationFrame(draw)
 }
 
-// draw()
+btnStart.addEventListener('click', () => {
+  initMessage.style.display = 'none'
+  gameRunning = true
+  resetGame()
+  draw()
+})
 

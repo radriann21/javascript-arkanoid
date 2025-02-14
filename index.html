@@ -8,10 +8,18 @@
 </head>
 <body>
 
+  <article id="init" class="init">
+    <h2>Bienvenido a ArkanoidJS</h2>
+    <button id="start-btn">Inicia el juego</button>
+  </article>
+
   <section>
     <header>
       <h1>ArkanoidJS</h1>
-      <p><span class="score">Score</span>: 0</p>
+      <div>
+        <span>Score:</span>
+        <span id="score">0</span>
+      </div>
     </header>
     
     <canvas id="canvas"></canvas>

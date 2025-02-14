@@ -37,9 +37,7 @@ export class Ball {
     if (this.x + this.speedX > canvasW || this.x + this.speedX < 0) {
       this.speedX = -this.speedX
     }
-    if (this.y + this.speedY < 0 || this.y + this.radius > canvasH) {
-      this.speedY = -this.speedY
-    }
+
     if (this.radius < paddle.width && this.y + this.radius > paddle.y && this.x + this.radius > paddle.x && this.x + this.radius < paddle.x + paddle.width) {
       this.speedY = -this.speedY
     }
