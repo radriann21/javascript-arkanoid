@@ -50,6 +50,8 @@ function drawBricks() {
     if (!brick.isDestroyed) {
       brick.drawBrick(ctx)
       if (brick.isColliding(ball)) {
+        const destroySound = new Audio('./sounds/block.wav')
+        destroySound.play()
         ball.speedY = -ball.speedY
         brick.isDestroyed = true
         score += 20
@@ -65,6 +67,8 @@ function checkGameOver(draw) {
     initMessage.style.display = 'flex'
     scoreMessage.textContent = 0
     cancelAnimationFrame(draw)
+    const gameOverAudio = new Audio('./sounds/gameover.wav')
+    gameOverAudio.play()
   }
 }
 
@@ -99,6 +103,8 @@ function draw() {
 }
 
 btnStart.addEventListener('click', () => {
+  const startAudio = new Audio('./sounds/start.wav')
+  startAudio.play()
   initMessage.style.display = 'none'
   gameRunning = true
   resetGame()

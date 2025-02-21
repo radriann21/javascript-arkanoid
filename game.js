@@ -34,12 +34,15 @@ export class Ball {
   }
 
   ballCollisions(canvasW, canvasH, paddle) {
+    const sound = new Audio('./sounds/paddle.wav')
     if (this.x + this.speedX > canvasW || this.x + this.speedX < 0) {
       this.speedX = -this.speedX
+      sound.play()
     }
 
     if (this.radius < paddle.width && this.y + this.radius > paddle.y && this.x + this.radius > paddle.x && this.x + this.radius < paddle.x + paddle.width) {
       this.speedY = -this.speedY
+      sound.play()
     }
   }
 
