@@ -10,7 +10,7 @@ canvas.width = 580
 
 const canvasObj = new Canvas(canvas, canvas.width, canvas.height)
 const ctx = canvasObj.getContext()
-const ball = new Ball(canvas.width / 2, canvas.height - 80, 6, '#000', 3, -3)
+const ball = new Ball(canvas.width / 2, canvas.height - 80, 6, '#fff', 3, -3)
 const paddle = new Paddle((canvas.width / 2) - 50, canvas.height - 60, 100, 20, '#000')
 
 const colors = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33F3', '#33FFF6', '#FF9B33', '#A533FF']
@@ -65,6 +65,7 @@ function checkGameOver(draw) {
   if (ball.y + ball.radius > canvas.height) {
     gameRunning = false
     initMessage.style.display = 'flex'
+    initMessage.firstElementChild.textContent = "Game Over"
     scoreMessage.textContent = 0
     cancelAnimationFrame(draw)
     const gameOverAudio = new Audio('./sounds/gameover.wav')
@@ -77,15 +78,11 @@ function resetGame() {
   ball.y = canvas.height - 80;
   ball.speedX = 3;
   ball.speedY = -3;
-
   paddle.x = (canvas.width / 2) - 50;
-
   bricks.length = 0; 
   createBricks();
-
   score = 0;
   scoreMessage.textContent = score;
-
   gameRunning = true;
 }
 

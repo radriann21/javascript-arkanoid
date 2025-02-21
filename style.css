@@ -22,7 +22,7 @@ article.init {
   height: 300px;
   text-align: center;
   border-radius: 8px;
-  background-color: #c2c2c2;
+  background-color: transparent;
   z-index: 10;
   position: absolute;
   top: 50%;
@@ -31,6 +31,7 @@ article.init {
 
   h2 {
     margin: 1rem 0;
+    color: #fff;
   }
 
   button {
@@ -41,6 +42,14 @@ article.init {
     color: #fff;
     cursor: pointer;
   }
+}
+
+span.js {
+  color: #f3d634;
+}
+
+span.score-title {
+  font-weight: bold;
 }
 
 section {
@@ -67,4 +76,6 @@ section {
 canvas#canvas {
   border: 2px solid #000;
   border-bottom: none;
+  background-image: url('./assets/bkg.png');
+  background-repeat: repeat;
 }

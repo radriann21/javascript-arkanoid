@@ -34,15 +34,30 @@ export class Ball {
   }
 
   ballCollisions(canvasW, canvasH, paddle) {
-    const sound = new Audio('./sounds/paddle.wav')
-    if (this.x + this.speedX > canvasW || this.x + this.speedX < 0) {
-      this.speedX = -this.speedX
-      sound.play()
+    const sound = new Audio('./sounds/paddle.wav');
+    
+    if (this.x + this.radius > canvasW || this.x - this.radius < 0) {
+      this.speedX = -this.speedX;
+      sound.play();
     }
-
-    if (this.radius < paddle.width && this.y + this.radius > paddle.y && this.x + this.radius > paddle.x && this.x + this.radius < paddle.x + paddle.width) {
-      this.speedY = -this.speedY
-      sound.play()
+  
+    if (
+      this.y + this.radius > paddle.y &&
+      this.x + this.radius > paddle.x &&
+      this.x - this.radius < paddle.x + paddle.width
+    ) {
+      const collidePoint = this.x - (paddle.x + paddle.width / 2);
+      const normalizedCollidePoint = collidePoint / (paddle.width / 2);
+  
+      this.speedX = normalizedCollidePoint * 5; 
+      this.speedY = -this.speedY;
+  
+      sound.play();
+    }
+  
+    if (this.y - this.radius < 0) {
+      this.speedY = -this.speedY;
+      sound.play();
     }
   }
 
@@ -65,10 +80,34 @@ export class Paddle {
   }
 
   drawPaddle(ctx) {
-    ctx.beginPath()
-    ctx.fillRect(this.x, this.y, this.width, this.height)
-    ctx.fillStyle = this.color
-    ctx.closePath()
+    // Crear un degradado lineal para el paddle
+    const gradient = ctx.createLinearGradient(this.x, this.y, this.x + this.width, this.y);
+    gradient.addColorStop(0, '#FFD700'); // Amarillo dorado
+    gradient.addColorStop(0.5, '#FFA500'); // Naranja claro
+    gradient.addColorStop(1, '#FF4500'); // Naranja oscuro
+
+    // Dibujar el cuerpo principal del paddle con el degradado
+    ctx.fillStyle = gradient;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+
+    // Agregar un borde al paddle
+    ctx.strokeStyle = '#8B0000'; // Rojo oscuro para el borde
+    ctx.lineWidth = 2;
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
+
+    // Agregar detalles visuales (líneas decorativas)
+    ctx.beginPath();
+    ctx.moveTo(this.x + 10, this.y + this.height / 2); // Línea izquierda
+    ctx.lineTo(this.x + this.width - 10, this.y + this.height / 2); // Línea derecha
+    ctx.strokeStyle = '#FFFFFF'; // Blanco para las líneas
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Agregar un pequeño círculo en el centro del paddle para darle un toque futurista
+    ctx.beginPath();
+    ctx.arc(this.x + this.width / 2, this.y + this.height / 2, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = '#FFFFFF'; // Blanco para el círculo
+    ctx.fill();
   }
 
   paddleCollisions(canvasW) {
@@ -79,14 +118,22 @@ export class Paddle {
     }
   }
 
+  moveLeft() {
+    this.x -= this.speed;
+  }
+
+  moveRight() {
+    this.x += this.speed;
+  }
+
   movePaddle() {
     document.addEventListener('keydown', (evt) => {
       switch (evt.key) {
         case 'ArrowLeft':
-          this.x -= this.speed
+          this.moveLeft()
           break
         case 'ArrowRight':
-          this.x += this.speed
+          this.moveRight()
           break
         default:
           break
